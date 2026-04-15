@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reliance Finance | Admin Portal</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;900&display=swap');
+        body { font-family: 'Inter', sans-serif; background-color: #f0f2f5; }
+        .reliance-bg { background-color: #004f9f; }
+        .hidden { display: none !important; }
+        
+        .round-stamp {
+            position: relative; width: 100px; height: 100px;
+            border: 3px double #e11d48; border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            transform: rotate(-15deg); opacity: 0.85;
+        }
+        .round-stamp::after {
+            content: "APPROVED"; font-size: 11px; font-weight: 900;
+            color: #e11d48; border-top: 1.5px solid #e11d48;
+            border-bottom: 1.5px solid #e11d48; padding: 1px 3px;
+        }
+        .stamp-text { position: absolute; width: 100%; height: 100%; font-size: 7px; font-weight: 900; color: #e11d48; }
+
+        #loginOverlay { backdrop-filter: blur(20px); }
+        @media print { .no-print { display: none; } body { background: white; padding: 0; } }
+    </style>
+</head>
+<body class="antialiased overflow-hidden" id="mainBody">
+
+    <div id="loginOverlay" class="fixed inset-0 z-[100] bg-slate-900/95 flex items-center justify-center p-6">
+        <div class="bg-white w-full max-w-xs rounded-[2.5rem] p-8 shadow-2xl text-center">
+            <div class="w-16 h-16 reliance-bg text-white rounded-2xl flex items-center justify-center mx-auto mb-6">
+                <i class="fas fa-lock text-2xl"></i>
+            </div>
+            <input type="password" id="mainPass" placeholder="Password" class="w-full p-4 bg-slate-100 rounded-2xl text-center text-xl font-bold outline-none mb-4">
+            <button onclick="verifyLogin()" class="w-full reliance-bg text-white py-4 rounded-2xl font-black uppercase tracking-widest">Unlock</button>
+        </div>
+    </div>
+
+    <div id="contentWrapper" class="hidden">
+        <div id="formSection" class="max-w-md mx-auto p-4 no-print">
+            <div class="bg-white rounded-[2rem] shadow-2xl p-6">
+                <div class="flex flex-col items-center mb-6">
+                    <img src="https://i.ibb.co/hFRYXLKC/Reliance-logo.jpg" alt="Reliance Logo" class="h-14 mb-2 mix-blend-multiply">
+                    <h1 class="text-xl font-black text-slate-800 tracking-tighter uppercase">Admin Panel</h1>
+                </div>
+                <div class="space-y-3">
+                    <input type="text" id="inName" placeholder="Customer Name" class="w-full p-3 bg-slate-50 border rounded-xl outline-none">
+                    <input type="tel" id="inMobile" placeholder="Mobile Number" class="w-full p-3 bg-slate-50 border rounded-xl outline-none">
+                    <input type="text" id="inAddr" placeholder="Full Address" class="w-full p-3 bg-slate-50 border rounded-xl outline-none">
+                    <div class="grid grid-cols-2 gap-2">
+                        <input type="number" id="inAmt" oninput="doCalc()" placeholder="Amount" class="p-3 bg-slate-900 text-white rounded-xl outline-none font-bold">
+                        <select id="inTenor" onchange="doCalc()" class="p-3 bg-slate-900 text-white rounded-xl outline-none font-bold">
+                            <option value="12">12 Mo</option><option value="24" selected>24 Mo</option><option value="36">36 Mo</option>
+                        </select>
+                    </div>
+                    <div class="grid grid-cols-2 gap-2">
+                        <input type="text" id="inPan" placeholder="PAN" class="p-3 bg-slate-50 border rounded-xl outline-none uppercase">
+                        <input type="text" id="inAadhar" placeholder="Aadhar" class="p-3 bg-slate-50 border rounded-xl outline-none">
+                    </div>
+                    <input type="text" id="inBank" placeholder="Bank Name" class="w-full p-3 bg-slate-50 border rounded-xl outline-none">
+                    <input type="text" id="inAcc" placeholder="A/C Number" class="w-full p-3 bg-slate-50 border rounded-xl outline-none">
+                    <input type="text" id="inIfsc" placeholder="IFSC" class="w-full p-3 bg-slate-50 border rounded-xl outline-none uppercase">
+                </div>
+                <button onclick="makeLetter()" class="w-full mt-6 reliance-bg text-white py-4 rounded-xl font-black">GENERATE LETTER</button>
+            </div>
+        </div>
+
+        <div id="letterSection" class="hidden p-2">
+            <div class="max-w-2xl mx-auto bg-white p-8 md:p-10 relative border-t-[8px] border-[#004f9f] shadow-2xl">
+                <div class="absolute top-6 right-6 z-10 scale-75 md:scale-100">
+                    <div class="round-stamp">
+                        <svg class="stamp-text" viewBox="0 0 100 100"><path id="curve" d="M 25, 50 a 25,25 0 1,1 50,0 a 25,25 0 1,1 -50,0" fill="none" /><text><textPath xlink:href="#curve">• RELIANCE FINANCE • VERIFIED</textPath></text></svg>
+                    </div>
+                </div>
+
+                <div class="flex justify-between items-center mb-6 pb-4 border-b">
+                    <div>
+                        <img src="https://i.ibb.co/hFRYXLKC/Reliance-logo.jpg" alt="Reliance Logo" class="h-12 mb-1 mix-blend-multiply">
+                        <p class="text-[7px] font-bold text-slate-400 uppercase tracking-widest">Reliance Consumer Finance Ltd.</p>
+                    </div>
+                    <div class="text-right">
+                        <h2 class="text-sm font-black text-slate-800">SANCTION LETTER</h2>
+                        <p class="text-[8px] font-mono text-slate-400 uppercase">Ref: <span id="outRef"></span></p>
+                        <p class="text-[8px] font-bold text-slate-900" id="outDate"></p>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-2 gap-4 mb-5">
+                    <div class="bg-slate-50 p-3 rounded-xl border">
+                        <p class="text-[7px] font-black text-[#004f9f] uppercase mb-1">Borrower</p>
+                        <p class="text-sm font-black text-slate-900 uppercase leading-none" id="outName"></p>
+                        <p class="text-[9px] text-slate-500 mt-1 italic" id="outAddr"></p>
+                    </div>
+                    <div class="bg-slate-50 p-3 rounded-xl border flex flex-col justify-center text-[9px]">
+                        <div class="flex justify-between border-b pb-1"><span>PAN:</span><b id="outPan"></b></div>
+                        <div class="flex justify-between pt-1"><span>Aadhar:</span><b id="outAadhar"></b></div>
+                    </div>
+                </div>
+
+                <div class="border rounded-xl overflow-hidden mb-5 text-[11px]">
+                    <div class="bg-slate-900 text-white text-[8px] px-4 py-1.5 uppercase font-bold tracking-widest">Loan Summary</div>
+                    <div class="p-3 space-y-2">
+                        <div class="flex justify-between"><span>Approved Amount</span><b class="text-lg">₹ <span id="outAmt"></span></b></div>
+                        <div class="flex justify-between border-t pt-1"><span>EMI (Monthly)</span><b class="text-blue-600">₹ <span id="outEmi"></span></b></div>
+                        <div class="flex justify-between border-t pt-1"><span>Tenure</span><b id="outTenor"></b> Months</div>
+                    </div>
+                </div>
+
+                <div class="bg-blue-50 p-4 rounded-xl border-l-4 border-blue-600 mb-6 text-[10px]">
+                    <p class="font-black text-blue-800 mb-2 uppercase text-[8px]">Payout Bank Details</p>
+                    <div class="grid grid-cols-3 gap-2">
+                        <div><p class="text-slate-400 font-bold text-[7px] uppercase">Bank</p><p class="font-bold uppercase" id="outBank"></p></div>
+                        <div><p class="text-slate-400 font-bold text-[7px] uppercase">A/C No</p><p class="font-mono font-bold" id="outAccUser"></p></div>
+                        <div><p class="text-slate-400 font-bold text-[7px] uppercase">IFSC</p><p class="font-mono font-bold uppercase" id="outIfsc"></p></div>
+                    </div>
+                </div>
+
+                <div class="flex justify-between items-end mt-12 px-2">
+                    <div class="text-center"><div class="w-16 h-px bg-slate-300 mb-1"></div><p class="text-[7px] font-bold text-slate-400">Customer Sign</p></div>
+                    <div class="text-center">
+                        <img src="https://i.ibb.co/7tTyXnZG/images-1.jpg" alt="Official Signature" class="h-10 mx-auto mb-[-10px] mix-blend-multiply relative z-10">
+                        <div class="w-40 h-0.5 reliance-bg mb-1 relative z-0"></div>
+                        <p class="text-[11px] font-black text-slate-800 uppercase">Rahul A. Sharma</p>
+                        <p class="text-[8px] font-bold text-[#004f9f] uppercase tracking-tighter">Authorized Signatory</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="max-w-2xl mx-auto mt-6 flex gap-3 no-print pb-10 px-4">
+                <button onclick="window.print()" class="flex-1 bg-slate-800 text-white py-3 rounded-xl font-bold text-xs uppercase">Save PDF</button>
+                <button onclick="location.reload()" class="flex-1 bg-blue-600 text-white py-3 rounded-xl font-bold text-xs uppercase">New Application</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function verifyLogin() {
+            if(document.getElementById('mainPass').value === '1245') {
+                document.getElementById('loginOverlay').classList.add('hidden');
+                document.getElementById('contentWrapper').classList.remove('hidden');
+                document.getElementById('mainBody').classList.remove('overflow-hidden');
+            }
+        }
+        function doCalc() {
+            const a = document.getElementById('inAmt').value;
+            const t = document.getElementById('inTenor').value;
+            if(a > 0) {
+                const emi = Math.round((parseInt(a) + (parseInt(a) * 0.105)) / parseInt(t));
+                return emi;
+            }
+            return 0;
+        }
+        function makeLetter() {
+            const emi = doCalc();
+            document.getElementById('outName').innerText = document.getElementById('inName').value;
+            document.getElementById('outAddr').innerText = document.getElementById('inAddr').value;
+            document.getElementById('outAmt').innerText = parseInt(document.getElementById('inAmt').value).toLocaleString('en-IN');
+            document.getElementById('outTenor').innerText = document.getElementById('inTenor').value;
+            document.getElementById('outEmi').innerText = emi.toLocaleString('en-IN');
+            document.getElementById('outPan').innerText = document.getElementById('inPan').value || "NA";
+            document.getElementById('outAadhar').innerText = document.getElementById('inAadhar').value || "NA";
+            document.getElementById('outBank').innerText = document.getElementById('inBank').value;
+            document.getElementById('outAccUser').innerText = document.getElementById('inAcc').value;
+            document.getElementById('outIfsc').innerText = document.getElementById('inIfsc').value;
+            document.getElementById('outDate').innerText = new Date().toLocaleDateString('en-IN', {day:'2-digit', month:'long', year:'numeric'});
+            document.getElementById('outRef').innerText = 'REL-' + Math.floor(10000000 + Math.random() * 90000000);
+            document.getElementById('formSection').classList.add('hidden');
+            document.getElementById('letterSection').classList.remove('hidden');
+            window.scrollTo(0,0);
+        }
+    </script>
+</body>
+</html>
