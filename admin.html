@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Premium Access Denied</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+        }
+
+        body {
+            background: #080808; /* Deep Dark Background */
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+        }
+
+        /* Animated Background Gradients */
+        .bg-glow {
+            position: absolute;
+            width: 300px;
+            height: 300px;
+            background: rgba(255, 0, 0, 0.2);
+            filter: blur(100px);
+            border-radius: 50%;
+            z-index: 1;
+            animation: move 10s infinite alternate;
+        }
+
+        @keyframes move {
+            from { transform: translate(-100px, -100px); }
+            to { transform: translate(100px, 100px); }
+        }
+
+        /* Glassmorphism Card */
+        .premium-card {
+            position: relative;
+            z-index: 10;
+            width: 90%;
+            max-width: 400px;
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 32px;
+            padding: 40px 30px;
+            text-align: center;
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.5);
+            animation: fadeInUp 0.8s ease-out;
+        }
+
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Premium Logo Icon */
+        .premium-icon {
+            width: 80px;
+            height: 80px;
+            background: linear-gradient(135deg, #ff416c, #ff4b2b);
+            border-radius: 22px;
+            margin: 0 auto 25px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 35px;
+            color: #fff;
+            box-shadow: 0 10px 20px rgba(255, 75, 43, 0.4);
+            transform: rotate(-10deg);
+        }
+
+        h2 {
+            color: #fff;
+            font-size: 26px;
+            font-weight: 700;
+            letter-spacing: -0.5px;
+            margin-bottom: 12px;
+        }
+
+        p {
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 15px;
+            line-height: 1.6;
+            margin-bottom: 35px;
+        }
+
+        .status-badge {
+            display: inline-block;
+            padding: 6px 16px;
+            background: rgba(255, 75, 43, 0.1);
+            color: #ff4b2b;
+            border-radius: 100px;
+            font-size: 12px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 20px;
+            border: 1px solid rgba(255, 75, 43, 0.2);
+        }
+
+        /* Premium Contact Button */
+        .btn-contact {
+            width: 100%;
+            padding: 18px;
+            border: none;
+            border-radius: 20px;
+            background: #fff;
+            color: #000;
+            font-size: 16px;
+            font-weight: 700;
+            cursor: pointer;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 12px;
+            transition: all 0.3s ease;
+            text-decoration: none;
+        }
+
+        .btn-contact:hover {
+            transform: translateY(-5px);
+            background: #25D366; /* WhatsApp Green on Hover */
+            color: #fff;
+            box-shadow: 0 15px 30px rgba(37, 211, 102, 0.4);
+        }
+
+        .btn-contact i {
+            font-size: 20px;
+        }
+
+        /* Footer Text */
+        .footer-text {
+            margin-top: 25px;
+            font-size: 12px;
+            color: rgba(255, 255, 255, 0.4);
+        }
+    </style>
+</head>
+<body>
+
+    <div class="bg-glow"></div>
+
+    <div class="premium-card">
+        <div class="status-badge">System Blocked</div>
+        
+        <div class="premium-icon">
+            <i class="fas fa-crown"></i>
+        </div>
+
+        <h2>Access Expired</h2>
+        
+        <p>
+            Your <b>Free Plan</b> has reached its limit. Access is currently restricted by the developer. Please contact for a <b>recharge</b> to continue.
+        </p>
+
+        <button class="btn-contact" onclick="goToWhatsApp()">
+            <i class="fab fa-whatsapp"></i> CONTACT DEVELOPER
+        </button>
+
+        <div class="footer-text">Device ID: BK-8789-V1</div>
+    </div>
+
+    <script>
+        function goToWhatsApp() {
+            const phone = "918789740573";
+            const message = "Hi Developer, My free plan has expired. I want to recharge my account and get full access. Help me out!";
+            const waUrl = `https://wa.me/${phone}?text=${encodeURIComponent(message)}`;
+            
+            window.location.href = waUrl;
+        }
+    </script>
+
+</body>
+</html>
+
